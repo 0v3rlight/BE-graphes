@@ -35,7 +35,16 @@ public class Path {
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
+
+        for(int i = 0; i<nodes.size()-1; i++)
+        {
+        	Arc arc;
+        	for(Node node: nodes.toArray(new Arc[0] )[i].getSuccessors());
+        	{
+        		
+        	}
+        }
+        
         return new Path(graph, arcs);
     }
 
@@ -198,11 +207,19 @@ public class Path {
      * 
      * @return true if the path is valid, false otherwise.
      * 
-     * @deprecated Need to be implemented.
+     * Need to be implemented.
      */
     public boolean isValid() {
-        // TODO:
-        return false;
+    	Node last = origin;
+        for(Arc arc: arcs)
+        {
+        	if(!arc.getOrigin().equals(last))
+        	{
+        		return false;
+        	}
+        	last = arc.getDestination();
+        }
+        return true;
     }
 
     /**
@@ -210,11 +227,17 @@ public class Path {
      * 
      * @return Total length of the path (in meters).
      * 
-     * @deprecated Need to be implemented.
+     * Need to be implemented.
      */
     public float getLength() {
-        // TODO:
-        return 0;
+
+    	float length = 0;
+    	for(Arc arc: arcs)
+    	{
+    		length += arc.getLength();
+    	}
+    	
+        return length;
     }
 
     /**
@@ -225,11 +248,17 @@ public class Path {
      * @return Time (in seconds) required to travel this path at the given speed (in
      *         kilometers-per-hour).
      * 
-     * @deprecated Need to be implemented.
+     * Need to be implemented.
      */
     public double getTravelTime(double speed) {
-        // TODO:
-        return 0;
+
+    	float temps = 0;
+    	for(Arc arc: arcs)
+    	{
+    		temps += arc.getTravelTime(speed);
+    	}
+    	
+        return temps;
     }
 
     /**
@@ -238,11 +267,17 @@ public class Path {
      * 
      * @return Minimum travel time to travel this path (in seconds).
      * 
-     * @deprecated Need to be implemented.
+     * Need to be implemented.
      */
     public double getMinimumTravelTime() {
-        // TODO:
-        return 0;
+
+    	float temps = 0;
+    	for(Arc arc: arcs)
+    	{
+    		temps += arc.getMinimumTravelTime();
+    	}
+    	
+        return temps;
     }
 
 }
