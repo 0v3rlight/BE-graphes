@@ -30,21 +30,44 @@ public class Path {
      * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
      *         consecutive nodes in the list are not connected in the graph.
      * 
-     * @deprecated Need to be implemented.
+     * Need to be implemented.
      */
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
 
+        if(nodes.size() == 1)
+        {
+        	return new Path(graph, nodes.get(0));
+        }
+
         for(int i = 0; i<nodes.size()-1; i++)
         {
-        	Arc arc;
-        	for(Node node: nodes.toArray(new Arc[0] )[i].getSuccessors());
+        	Arc ShortestArc = null;
+        	List<Arc> successeurs = nodes.get(i).getSuccessors();
+        	
+        	for(Arc arcCourant: successeurs)
         	{
-        		
+        		if (arcCourant.getDestination() == nodes.get(i+1))
+        		{
+        			if (ShortestArc == null)
+        			{
+        				ShortestArc = successeurs.get(0);
+        			}
+        			
+	        		if( arcCourant.getMinimumTravelTime()<ShortestArc.getMinimumTravelTime())
+	        		{
+	        			ShortestArc = arcCourant;
+	        		}
+        		}      		
         	}
+        	
+    		if(ShortestArc == null)
+    		{
+    			throw new IllegalArgumentException("nodes non liées");
+    		}
+    		arcs.add(ShortestArc);   
         }
-        
         return new Path(graph, arcs);
     }
 
@@ -60,12 +83,44 @@ public class Path {
      * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
      *         consecutive nodes in the list are not connected in the graph.
      * 
-     * @deprecated Need to be implemented.
+     * Need to be implemented.
      */
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
+
+        if(nodes.size() == 1)
+        {
+        	return new Path(graph, nodes.get(0));
+        }
+
+        for(int i = 0; i<nodes.size()-1; i++)
+        {
+        	Arc ShortestArc = null;
+        	List<Arc> successeurs = nodes.get(i).getSuccessors();
+        	
+        	for(Arc arcCourant: successeurs)
+        	{
+        		if (arcCourant.getDestination() == nodes.get(i+1))
+        		{
+        			if (ShortestArc == null)
+        			{
+        				ShortestArc = successeurs.get(0);
+        			}
+        			
+	        		if( arcCourant.getLength()<ShortestArc.getLength())
+	        		{
+	        			ShortestArc = arcCourant;
+	        		}
+        		}       		
+        	}    		
+    		if(ShortestArc == null)
+    		{
+    			throw new IllegalArgumentException("nodes non liées");
+    		} 
+    		arcs.add(ShortestArc);
+        }
+        
         return new Path(graph, arcs);
     }
 
@@ -103,7 +158,7 @@ public class Path {
         return path;
     }
 
-    // Graph containing this path.
+    // Graph containing nodes[1] this path.
     private final Graph graph;
 
     // Origin of the path
