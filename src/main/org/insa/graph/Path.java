@@ -18,6 +18,8 @@ import java.util.List;
  */
 public class Path {
 
+	// Test pour voir si git marche
+	
     /**
      * Create a new path that goes through the given list of nodes (in order),
      * choosing the fastest route if multiple are available.
