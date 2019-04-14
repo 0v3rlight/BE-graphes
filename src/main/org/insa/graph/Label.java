@@ -4,7 +4,7 @@ public class Label {
 	
 	public Node sommetCourant;
 	public Boolean marque;
-	public int cout;
+	public double cout;
 	public Node pere;
 	
 	public int getCost()
@@ -12,5 +12,4 @@ public class Label {
 		return 0;
 	}
 	
-
 }
