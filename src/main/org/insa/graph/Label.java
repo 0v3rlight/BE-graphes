@@ -1,15 +1,16 @@
 package org.insa.graph;
 
-public class Label {
-	
+public class Label implements Comparable<Label>
+{
 	public Node sommetCourant;
-	public Boolean marque;
+	public boolean marque;
 	public double cout;
 	public Node pere;
-	
-	public int getCost()
+
+	@Override
+	public int compareTo(Label o)
 	{
-		return 0;
+		return Double.compare(cout, o.cout);
 	}
 	
 }

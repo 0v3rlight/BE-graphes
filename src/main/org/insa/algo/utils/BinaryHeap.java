@@ -10,6 +10,9 @@
 package org.insa.algo.utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * Implements a binary heap. Note that all "matching" is based on the compareTo
@@ -26,6 +29,8 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E>
 
 	// The heap array.
 	private final ArrayList<E> array;
+	
+	private Map<E, Integer> map;
 
 	/**
 	 * Construct a new empty binary heap.
@@ -34,6 +39,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E>
 	{
 		this.currentSize = 0;
 		this.array = new ArrayList<E>();
+		this.map = new HashMap<E, Integer>();
 	}
 
 	/**
@@ -46,6 +52,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E>
 	{
 		this.currentSize = heap.currentSize;
 		this.array = new ArrayList<E>(heap.array);
+		this.map = new HashMap<E, Integer>();
 	}
 
 	/**
@@ -65,6 +72,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E>
 		{
 			this.array.set(index, value);
 		}
+		map.put(value, index);
 	}
 
 	/**
@@ -165,7 +173,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E>
 	@Override
 	public void remove(E x) throws ElementNotFoundException
 	{
-		int index = array.indexOf(x);
+		int index = map.get(x);
 		if (index == -1 || index >= this.currentSize)
 		{
 			throw new ElementNotFoundException(x);
