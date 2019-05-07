@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.lang.System;
 
 import org.insa.algo.AbstractSolution.Status;
 import org.insa.algo.utils.BinaryHeap;
@@ -143,6 +144,13 @@ public class AStarAlgorithm extends DijkstraAlgorithm
 	        solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcs));
             notifyDestinationReached(data.getDestination());
 		}
+		int m = 0;
+		for(Arc arc : arcs)
+		{
+			m+=arc.getLength();
+		}
+		System.out.print("path : " + new Path(graph, arcs).getLength() + "\n");
+		System.out.print("A* : " + m);
 		return solution;
 	}
 		
