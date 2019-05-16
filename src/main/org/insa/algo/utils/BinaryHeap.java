@@ -10,9 +10,6 @@
 package org.insa.algo.utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 
 /**
  * Implements a binary heap. Note that all "matching" is based on the compareTo
@@ -24,9 +21,6 @@ import java.util.Map;
 public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E>
 {
 
-	// Number of elements in heap.
-	private int currentSize;
-
 	// The heap array.
 	private final ArrayList<E> array;
 
@@ -35,8 +29,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E>
 	 */
 	public BinaryHeap()
 	{
-		this.currentSize = 0;
-		this.array = new ArrayList<E>();
+		this.array = new FastSearchArrayList<E>();
 	}
 
 	/**
@@ -47,8 +40,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E>
 	 */
 	public BinaryHeap(BinaryHeap<E> heap)
 	{
-		this.currentSize = heap.currentSize;
-		this.array = new ArrayList<E>(heap.array);
+		this.array = new FastSearchArrayList<E>(heap.array);
 	}
 
 	/**
@@ -116,11 +108,11 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E>
 		int ileft = index_left(index);
 		int iright = ileft + 1;
 
-		if (ileft < this.currentSize)
+		if (ileft < this.array.size())
 		{
 			E current = this.array.get(index);
 			E left = this.array.get(ileft);
-			boolean hasRight = iright < this.currentSize;
+			boolean hasRight = iright < this.array.size();
 			E right = (hasRight) ? this.array.get(iright) : null;
 
 			if (!hasRight || left.compareTo(right) < 0)
@@ -148,19 +140,19 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E>
 	@Override
 	public boolean isEmpty()
 	{
-		return this.currentSize == 0;
+		return this.array.size() == 0;
 	}
 
 	@Override
 	public int size()
 	{
-		return this.currentSize;
+		return this.array.size();
 	}
 
 	@Override
 	public void insert(E x)
 	{
-		int index = this.currentSize++;
+		int index = this.array.size();
 		this.arraySet(index, x);
 		this.percolateUp(index);
 	}
@@ -169,14 +161,17 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E>
 	public void remove(E x) throws ElementNotFoundException
 	{
 		int index = array.indexOf(x);
-		if (index == -1 || index >= this.currentSize)
+		if (index == -1 || index >= this.array.size())
 		{
 			throw new ElementNotFoundException(x);
 		}
-		E lastItem = this.array.get(--this.currentSize);
-		this.arraySet(index, lastItem);
-		this.percolateUp(index);
-		this.percolateDown(index);
+		E lastItem = this.array.remove(this.array.size() - 1);
+		if (index < this.array.size())
+		{
+			this.arraySet(index, lastItem);
+			this.percolateUp(index);
+			this.percolateDown(index);
+		}
 	}
 
 	@Override
@@ -191,9 +186,15 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E>
 	public E deleteMin() throws EmptyPriorityQueueException
 	{
 		E minItem = findMin();
-		E lastItem = this.array.get(--this.currentSize);
-		this.arraySet(0, lastItem);
-		this.percolateDown(0);
+		if (this.array.size() == 1)
+		{
+			this.array.clear();
+		} else
+		{
+			E lastItem = this.array.remove(this.array.size() - 1);
+			this.arraySet(0, lastItem);
+			this.percolateDown(0);
+		}
 		return minItem;
 	}
 
@@ -203,10 +204,10 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E>
 	public void print()
 	{
 		System.out.println();
-		System.out.println("========  HEAP  (size = " + this.currentSize + ")  ========");
+		System.out.println("========  HEAP  (size = " + this.array.size() + ")  ========");
 		System.out.println();
 
-		for (int i = 0; i < this.currentSize; i++)
+		for (int i = 0; i < this.array.size(); i++)
 		{
 			System.out.println(this.array.get(i).toString());
 		}
@@ -225,7 +226,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E>
 		BinaryHeap<E> copy = new BinaryHeap<E>(this);
 
 		System.out.println();
-		System.out.println("========  Sorted HEAP  (size = " + this.currentSize + ")  ========");
+		System.out.println("========  Sorted HEAP  (size = " + this.array.size() + ")  ========");
 		System.out.println();
 
 		while (!copy.isEmpty())
