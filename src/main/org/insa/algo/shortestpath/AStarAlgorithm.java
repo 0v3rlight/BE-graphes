@@ -60,8 +60,6 @@ public class AStarAlgorithm extends DijkstraAlgorithm
 		System.out.println(originId);
 		System.out.println(destId);
 
-		
-		
 		heap = new BinaryHeap<LabelStar>();
 		labels = new LabelStar[nbNodes];
 		
@@ -72,7 +70,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm
 			labels[i].marque = false;
 			labels[i].pere = null;
 			labels[i].cout = nodes.get(i).getId() == originId ? 0 : Double.POSITIVE_INFINITY;
-			labels[i].estimatedCost = Point.distance(nodes.get(i).getPoint(), nodes.get(destId).getPoint());
+			labels[i].estimatedCost = nodes.get(i).getPoint().distanceTo( nodes.get(destId).getPoint() );
 			heap.insert(labels[i]);
 		}
 		
@@ -100,8 +98,8 @@ public class AStarAlgorithm extends DijkstraAlgorithm
 					continue;
 				}
 				
-				double oldCost = label.getTotalCost();
-				double newCost = minLabel.getTotalCost() + data.getCost(a);
+				double oldCost = label.cout;
+				double newCost = minLabel.cout + data.getCost(a);
 				
 				if (newCost < oldCost)
 				{
@@ -153,6 +151,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm
 		System.out.print("A* : " + m);
 		return solution;
 	}
-		
+	
+
     
 }

@@ -33,12 +33,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm
 		super(data);
 	}
 
-	private void creerLabels()
-	{
-		heap = new BinaryHeap<Label>();
-		labels = new Label[nbNodes];
-	}
-	
+
 	@Override
 	protected ShortestPathSolution doRun()
 	{
@@ -57,7 +52,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm
 		System.out.println(originId);
 		System.out.println(destId);
 
-		creerLabels();
+		heap = new BinaryHeap<Label>();
+		labels = new Label[nbNodes];
 		
 		for (int i = 0; i < nbNodes; i++)
 		{
@@ -87,7 +83,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm
 				}
 				
 				Label label = labels[a.getDestination().getId()];
-				
+					
 				if (label.marque)
 				{
 					continue;
