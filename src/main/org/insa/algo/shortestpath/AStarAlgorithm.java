@@ -28,7 +28,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm
         super(data);
     }
 
-    private BinaryHeap<LabelStar> heap;
+    private BinaryHeap<Label> heap;
 	private LabelStar[] labels ;
 	
 	private ShortestPathData data;
@@ -60,7 +60,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm
 		System.out.println(originId);
 		System.out.println(destId);
 
-		heap = new BinaryHeap<LabelStar>();
+		heap = new BinaryHeap<Label>();
 		labels = new LabelStar[nbNodes];
 		
 		for (int i = 0; i < nbNodes; i++)
@@ -79,7 +79,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm
 		
 		while (!heap.isEmpty() && !finish)
 		{
-			LabelStar minLabel = heap.deleteMin();
+			LabelStar minLabel = (LabelStar)heap.deleteMin();
 			minLabel.marque = true;
 			//System.out.println(nodeString(minLabel.sommetCourant));
 			

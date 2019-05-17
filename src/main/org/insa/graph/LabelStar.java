@@ -1,28 +1,10 @@
 package org.insa.graph;
 
-public class LabelStar implements Comparable<LabelStar>
+public class LabelStar extends Label
 {
-	public Node sommetCourant;
-	public boolean marque;
-	public double cout;
 	public double estimatedCost;
-	public Node pere;
 
 
-	@Override
-	public int compareTo(LabelStar o)
-	{
-		int comparaison = Double.compare(this.getTotalCost(),o.getTotalCost());
-		//return x tq:
-		// si this=o : x=0
-		// si this<o : x<0
-		// si this>o : x>0
-		if(comparaison == 0)
-		{
-			return Double.compare(o.cout, this.cout);
-		}
-		return comparaison;
-	}
 	
 	public double getTotalCost()
 	{
