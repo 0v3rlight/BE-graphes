@@ -5,6 +5,12 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.insa.algo.ArcInspector;
+import org.insa.algo.shortestpath.ShortestPathData;
+import org.insa.graph.Graph;
+import org.insa.graph.Node;
+import org.insa.graph.Path;
+
 public class Djikstra_tests {
 
 	public static void main(String[] args) throws IOException
@@ -23,5 +29,14 @@ public class Djikstra_tests {
 	    writer.close();
 	}
 	
+	private static Path testChemin(Graph map, Node origin, Node destination, String cout)
+	{
+		Path path;
+		ArcInspector arc;
+		ShortestPathData data = new ShortestPathData(map, origin, destination, arc );
+		
+		
+		return path;
+	}
 	
 }
