@@ -14,8 +14,10 @@ import java.util.Random;
 
 import org.insa.algo.ArcInspector;
 import org.insa.algo.ArcInspectorFactory;
+import org.insa.algo.shortestpath.AStarAlgorithm;
 import org.insa.algo.shortestpath.BellmanFordAlgorithm;
 import org.insa.algo.shortestpath.DijkstraAlgorithm;
+import org.insa.algo.shortestpath.ShortestPathAlgorithm;
 import org.insa.algo.shortestpath.ShortestPathData;
 import org.insa.algo.shortestpath.ShortestPathSolution;
 import org.insa.graph.Graph;
@@ -30,7 +32,7 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
 @RunWith(Parameterized.class)
-public class DjikstraTest
+public class DjikstraAStarTest
 {
 	private static final File MAP_DIRECTORY = new File("/home/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps");
 	private static final String MAP_EXTENSION = "mapgr";
@@ -60,7 +62,7 @@ public class DjikstraTest
 		@Override
 		public String toString()
 		{
-			String format = "Djikstra tests finished (%d tests on %d maps realised, including %d tests with oracle algorithm)";
+			String format = "Djikstra & A-Star tests finished (%d tests on %d maps realised, including %d tests with oracle algorithm)";
 			return String.format(format, totalTestCount, mapCount, oracleTestCount);
 		}
 	}
@@ -95,6 +97,12 @@ public class DjikstraTest
 			this.arcInspectorId = arcInspectorId;
 		}
 	}
+	
+	@FunctionalInterface
+	private static interface AlgorithmProvider
+	{
+		public ShortestPathAlgorithm provide(ShortestPathData data);
+	}
 
 	protected static class TestParameters
 	{
@@ -103,13 +111,15 @@ public class DjikstraTest
 		public final Nature nature;
 		public final int seed;
 		public final boolean nullLength;
+		public final AlgorithmProvider algorithmProvider;
 
-		public TestParameters(File map, Nature nature, int seed, boolean nullLength)
+		public TestParameters(File map, Nature nature, int seed, boolean nullLength, AlgorithmProvider algorithmProvider)
 		{
 			this.map = map;
 			this.nature = nature;
 			this.seed = seed;
 			this.nullLength = nullLength;
+			this.algorithmProvider = algorithmProvider;
 		}
 	};
 
@@ -124,13 +134,16 @@ public class DjikstraTest
 			if (f.isFile() && f.getName().toLowerCase().endsWith(MAP_EXTENSION) && f.length() <= MAX_FILE_SIZE)
 			{
 				testsInfos.mapCount++;
-				for (int seed = 0; seed < 5; seed++)
+				for(AlgorithmProvider algorithmProvider : new AlgorithmProvider[] {DijkstraAlgorithm::new, AStarAlgorithm::new})
 				{
-					objects.add(new TestParameters(f, Nature.DISTANCE, seed, false));
-					objects.add(new TestParameters(f, Nature.TIME, seed, false));
+					for (int seed = 0; seed < 5; seed++)
+					{
+						objects.add(new TestParameters(f, Nature.DISTANCE, seed, false, algorithmProvider));
+						objects.add(new TestParameters(f, Nature.TIME, seed, false, algorithmProvider));
+					}
+					objects.add(new TestParameters(f, Nature.DISTANCE, 0, true, algorithmProvider));
+					objects.add(new TestParameters(f, Nature.TIME, 0, true, algorithmProvider));
 				}
-				objects.add(new TestParameters(f, Nature.DISTANCE, 0, true));
-				objects.add(new TestParameters(f, Nature.TIME, 0, true));
 			}
 		}
 		return objects;
@@ -160,7 +173,7 @@ public class DjikstraTest
 				destination = origin;
 			}
 			ArcInspector arcInspector = ArcInspectorFactory.getAllFilters().get(parameters.nature.arcInspectorId);
-			solution = new DijkstraAlgorithm(new ShortestPathData(map, origin, destination, arcInspector)).run();
+			solution = parameters.algorithmProvider.provide(new ShortestPathData(map, origin, destination, arcInspector)).run();
 			if(USE_ORACLE && parameters.map.length() <= MAX_FILE_SIZE_WITH_ORACLE)
 			{
 				oracle = new BellmanFordAlgorithm(new ShortestPathData(map, origin, destination, arcInspector)).run();

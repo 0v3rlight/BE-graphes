@@ -50,9 +50,6 @@ public class AStarAlgorithm extends DijkstraAlgorithm
 		
 		originId = data.getOrigin().getId();
 		destId = data.getDestination().getId();
-		
-		System.out.println(originId);
-		System.out.println(destId);
 
 		heap = new BinaryHeap<Label>();
 		labels = new LabelStar[nbNodes];
@@ -75,7 +72,6 @@ public class AStarAlgorithm extends DijkstraAlgorithm
 		{
 			LabelStar minLabel = (LabelStar)heap.deleteMin();
 			minLabel.marque = true;
-			//System.out.println(nodeString(minLabel.sommetCourant));
 			
 			for (Arc a : minLabel.sommetCourant.getSuccessors())
 			{
