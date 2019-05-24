@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.Date;
 
 import org.insa.algo.ArcInspector;
+import org.insa.algo.ArcInspectorFactory;
+import org.insa.algo.shortestpath.DijkstraAlgorithm;
+import org.insa.algo.shortestpath.ShortestPathData;
 import org.insa.algo.shortestpath.ShortestPathSolution;
 import org.insa.graph.Graph;
 import org.insa.graph.Node;
@@ -31,10 +34,20 @@ public class Djikstra_tests {
 	
 	private static ShortestPathSolution testChemin(Graph map, Node origin, Node destination, String cout)
 	{
-		ShortestPathSolution path = null;
+		ShortestPathSolution path;
 		ArcInspector arc;
-	//	ShortestPathData data = new ShortestPathData(map, origin, destination, arc );
+		if( cout == "temps")
+		{
+			arc = ArcInspectorFactory.getAllFilters().get(0);
+		}
+		else
+		{
+			arc = ArcInspectorFactory.getAllFilters().get(2);			
+		}
 		
+		ShortestPathData data = new ShortestPathData(map, origin, destination, arc );
+		DijkstraAlgorithm algo = new DijkstraAlgorithm(data);
+		path = algo.run();
 		
 		return path;
 	}
