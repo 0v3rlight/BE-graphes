@@ -243,6 +243,7 @@ public abstract class PriorityQueueTest {
 
     @Test
     public void testDeleteThenRemove() {
+    	System.out.println(this);
         Assume.assumeFalse(queue.isEmpty());
         while (!queue.isEmpty()) {
             MutableInteger min = queue.deleteMin();
