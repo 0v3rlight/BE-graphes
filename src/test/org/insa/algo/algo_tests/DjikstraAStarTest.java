@@ -35,13 +35,13 @@ import org.junit.runners.Parameterized.Parameters;
 public class DjikstraAStarTest
 {
 	private static final File MAP_DIRECTORY = new File("/home/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps");
-	private static final String MAP_EXTENSION = "mapgr";
-	private static final int MAX_FILE_SIZE = 10 * 1024 * 1024;
+	private static final String MAP_EXTENSION = ".mapgr";
+	private static final int MAX_FILE_SIZE = 20 * 1024 * 1024;
 	private static final boolean USE_ORACLE = true;
 	private static final int MAX_FILE_SIZE_WITH_ORACLE = 1024 * 1024;
 	private static final float EPSILON = 0.00001f;
 
-	private static MapCache mapCache = new MapCache();
+	private static final MapCache mapCache = new MapCache();
 	private static final TestsInfos testsInfos = new TestsInfos();
 	
 	private static class TestsInfos
@@ -67,7 +67,7 @@ public class DjikstraAStarTest
 		}
 	}
 
-	private static class MapCache
+	public static class MapCache
 	{
 		private File file;
 		private Graph map;
@@ -86,7 +86,7 @@ public class DjikstraAStarTest
 		}
 	}
 
-	enum Nature
+	public static enum Nature
 	{
 		DISTANCE(0), TIME(2);
 
@@ -99,7 +99,7 @@ public class DjikstraAStarTest
 	}
 	
 	@FunctionalInterface
-	private static interface AlgorithmProvider
+	public static interface AlgorithmProvider
 	{
 		public ShortestPathAlgorithm provide(ShortestPathData data);
 	}

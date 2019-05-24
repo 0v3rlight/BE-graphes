@@ -1,0 +1,14 @@
+carre
+1
+10
+djikstra
+24 22 1ms
+2 10 1ms
+3 7 1ms
+17 23 1ms
+2 12 0ms
+0 3 1ms
+13 10 0ms
+10 0 0ms
+23 16 1ms
+24 11 0ms
