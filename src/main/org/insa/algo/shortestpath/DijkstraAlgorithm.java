@@ -38,7 +38,6 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm
 	protected ShortestPathSolution doRun()
 	{
 		data = getInputData();
-		solution = null;
         notifyOriginProcessed(data.getOrigin());
 
 		graph = data.getGraph();
@@ -49,9 +48,6 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm
 		originId = data.getOrigin().getId();
 		destId = data.getDestination().getId();
 		
-		System.out.println(originId);
-		System.out.println(destId);
-
 		heap = new BinaryHeap<Label>();
 		labels = new Label[nbNodes];
 		
@@ -72,7 +68,6 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm
 		{
 			Label minLabel = heap.deleteMin();
 			minLabel.marque = true;
-			//System.out.println(nodeString(minLabel.sommetCourant));
 			
 			for (Arc a : minLabel.sommetCourant.getSuccessors())
 			{
@@ -133,18 +128,11 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm
 	        solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcs));
             notifyDestinationReached(data.getDestination());
 		}
-		int m = 0;
-		for(Arc arc : arcs)
-		{
-			m+=arc.getLength();
-		}
-		System.out.print("path : " + new Path(graph, arcs).getLength() + "\n");
-		System.out.print("A* : " + m);
 		return solution;
 	}
 	
 	//debug pour la map carré
-	private String nodeString(Node n)
+	public String nodeString(Node n)
 	{
 		Point p = n.getPoint();
 		int x = (int)(p.getLongitude() * 10 - 0.5f) / 2;
